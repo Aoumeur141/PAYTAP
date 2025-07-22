@@ -1,0 +1,28 @@
+Metadata-Version: 2.4
+Name: pytap
+Version: 1.0.0
+Summary: PyTAP : Python Toolkit for Algerian Production suite.
+Author-email: Walid CHIKHI <waliidchikhi@gmail.com>
+Maintainer-email: Walid CHIKHI <waliidchikhi@gmail.com>
+Project-URL: source, https://github.com/NWP-Dz/PyTAP.git
+Project-URL: download, https://github.com/NWP-Dz/PyTAP/releases
+Project-URL: tracker, https://github.com/NWP-Dz/PyTAP/issues
+Keywords: NWP,meteorology,GRIB,FA,Production
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: Unix
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: paramiko
+Requires-Dist: numpy
+Requires-Dist: pandas
+
+PyTAP : Python Toolkit for Algerian Production suite .  

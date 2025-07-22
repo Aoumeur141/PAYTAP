@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+setup.py
+src/pytap/__init__.py
+src/pytap/config.py
+src/pytap/fetchdata.py
+src/pytap/utils.py
+src/pytap.egg-info/PKG-INFO
+src/pytap.egg-info/SOURCES.txt
+src/pytap.egg-info/dependency_links.txt
+src/pytap.egg-info/requires.txt
+src/pytap.egg-info/top_level.txt

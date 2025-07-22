@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytaps"
+dynamic = ["version"]
+description = "PyTAPS : Python Toolkit for Algerian Production Suite."
+authors = [
+    { name = "Walid CHIKHI", email = "waliidchikhi@gmail.com" },
+]
+maintainers = [
+  { name = "Walid CHIKHI", email = "waliidchikhi@gmail.com" }, 
+]
+
+readme = "README.md"
+license = {file = "LICENSE.txt"}
+keywords = ["NWP", "meteorology", "GRIB", "FA","Production"]
+
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Science/Research',
+    'Intended Audience :: Developers',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Operating System :: Unix',
+]
+
+
+requires-python = ">=3.6"
+dependencies=[
+        "paramiko",
+        "numpy",      
+        "pandas",
+            ]
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = {attr = "pytaps.__version__"}
+
+[project.urls]
+source = "https://github.com/NWP-Dz/PyTAPS.git"
+download = "https://github.com/NWP-Dz/PyTAPS/releases"
+tracker = "https://github.com/NWP-Dz/PyTAPS/issues"
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src",
+             ]
