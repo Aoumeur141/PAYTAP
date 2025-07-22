@@ -1,19 +1,29 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# src/pytaps/__init__.py
 
-# Expose functions from fetchdata module
-from .fetchdata import create_ftp_client, fetch_files, list_remote_files
+# This file marks the 'pytaps' directory as a Python package.
 
-# Expose functions from utils module
-# run_next_program has been removed from utils.py
-from .utils import generate_met_filename, check_local_files_exist, move_files_by_pattern
+# Define the package version. This is good practice for all Python packages.
+# It helps you and others know which version of your toolkit they are using.
+__version__ = "0.1.0" # You can change this version number as your package grows
 
+# Import common functions directly into the package's top level.
+# This makes them easy to use, e.g., pytaps.merge_binary_files()
+# We are importing from the *correct* files: file_operations and system_utils.
 
-class fireError(Exception):
-    """Errors class for the package."""
-    pass
+from .fetchdata import (
+    create_ftp_client,
+    list_remote_files,
+    fetch_files
+)
 
-# Removed redundant 'from . import module' imports.
-# If 'config' module is genuinely used for package-wide configuration,
-# you might want to expose specific config variables, but not the module itself
-# unless there's a strong reason. For now, assuming it's not needed directly exposed.
+from .file_operations import (
+    generate_met_filename,
+    check_local_files_exist,
+    move_files_by_pattern,
+    merge_binary_files, # <-- New function
+    delete_files        # <-- New function
+)
+
+from .system_utils import ( # <-- New module
+    execute_command     # <-- New function
+)
