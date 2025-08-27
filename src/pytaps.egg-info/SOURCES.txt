@@ -18,4 +18,3 @@ src/pytaps.egg-info/SOURCES.txt
 src/pytaps.egg-info/dependency_links.txt
 src/pytaps.egg-info/requires.txt
 src/pytaps.egg-info/top_level.txt
-src/pytaps/working logging/logging_utils.py

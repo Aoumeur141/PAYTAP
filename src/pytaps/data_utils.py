@@ -6,22 +6,23 @@ Data Utilities for common Pandas DataFrame operations.
 
 import logging
 import pandas as pd
-
 from datetime import datetime
-import logging # <-- NEW: Import logging
-
-import pandas as pd
 from pathlib import Path
-from typing import List, Optional, Any, Union, Tuple # MODIFIED: Added Tuple
-import openpyxl # This is crucial for openpyxl.worksheet.worksheet.Worksheet
+from typing import List, Optional, Any, Union, Tuple
 
-import openpyxl.worksheet.worksheet # For type hinting the Worksheet object
-from openpyxl import Workbook # Added
-from openpyxl.utils.dataframe import dataframe_to_rows # Added
 import os
 
-import pdbufr # <--- Make sure pdbufr is imported here for the new function
+# openpyxl specific imports
+import openpyxl # This is crucial for openpyxl.worksheet.worksheet.Worksheet
+import openpyxl.worksheet.worksheet # For type hinting the Worksheet object
+from openpyxl import Workbook
+# No need to explicitly import load_workbook if we use openpyxl.load_workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+
+import pdbufr
+
 logger = logging.getLogger(__name__) # Module-level logger
+
 
 def select_existing_columns(df: pd.DataFrame, desired_columns: List[str], logger_instance: Optional[logging.Logger] = None) -> pd.DataFrame:
     """
@@ -53,7 +54,7 @@ def select_existing_columns(df: pd.DataFrame, desired_columns: List[str], logger
 
 def load_dataframe_from_csv(file_path, logger_instance=None, **kwargs):
     # Use the provided logger instance, or create a default one if none is provided
-    log = logger_instance if logger_instance else module_logger
+    log = logger_instance if logger_instance is not None else logger 
     file_path_str = str(file_path)
 
     log.debug(f"Attempting to load data from CSV: {file_path_str}")
@@ -111,7 +112,7 @@ def load_excel_workbook(file_path: Path, logger_instance: logging.Logger = None)
         raise FileNotFoundError(f"Excel file not found: {file_path_str}")
 
     try:
-        wb = load_workbook(file_path_str)
+        wb = openpyxl.load_workbook(file_path_str)
         ws = wb.active
         log.info(f"Successfully loaded Excel workbook '{file_path.name}' and its active worksheet.")
         log.debug(f"Active worksheet name: '{ws.title}'")

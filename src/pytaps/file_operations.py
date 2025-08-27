@@ -63,7 +63,6 @@ def move_files_by_pattern(source_dir, filename_pattern, destination_dir, logger_
     Returns:
         list: A list of Path objects of the files that were moved.
     """
-    # THIS LINE (AND SUBSEQUENT ONES) NEEDS TO BE INDENTED
     current_function_logger = logger_instance if logger_instance is not None else logger # Use the module's 'logger'
     source_path = Path(source_dir)
     destination_path = Path(destination_dir)
@@ -81,7 +80,8 @@ def move_files_by_pattern(source_dir, filename_pattern, destination_dir, logger_
             return []
 
     moved_files = []
-    current_function_logger.debug(f"Searching for files matching '{filename_pattern}' in '{source_path}'") # Use current_function_logger
+    # FIX: Removed extra ')'
+    current_function_logger.debug(f"Searching for files matching '{filename_pattern}' in '{source_path}'")
     
     # Use glob to find files matching the pattern
     found_files = list(source_path.glob(filename_pattern))
@@ -103,7 +103,7 @@ def move_files_by_pattern(source_dir, filename_pattern, destination_dir, logger_
         else:
             current_function_logger.debug(f"Skipping non-file item: {file_path}") # Use current_function_logger
 
-    return moved_files # This return statement also needs to be indented
+    return moved_files
 
 
 def merge_binary_files(output_filepath, input_filepaths):
@@ -144,6 +144,7 @@ def merge_binary_files(output_filepath, input_filepaths):
         logger.error(f"Error during binary file merging to '{output_filepath}': {e}")
         raise
 
+# This is the CORRECTED and KEPT version of delete_files
 def delete_files(file_paths, ignore_errors=False, logger_instance=None):
     """
     Deletes a list of specified files.
@@ -167,28 +168,24 @@ def delete_files(file_paths, ignore_errors=False, logger_instance=None):
             try:
                 if path.is_file():
                     os.remove(path)
-                    logger.info(f"Successfully deleted file: {path}")
+                    current_function_logger.info(f"Successfully deleted file: {path}")
                 elif path.is_dir():
-                    # If it's a directory, use rmtree to delete it and its contents
-                    # This might not be intended for `delete_files` which implies files.
-                    # Consider having a separate `delete_directories` or `clean_directory` for this.
-                    # For now, if it's explicitly passed, we'll try to remove it.
                     shutil.rmtree(path)
-                    logger.info(f"Successfully deleted directory and its contents: {path}")
+                    current_function_logger.info(f"Successfully deleted directory and its contents: {path}")
                 else:
-                    logger.warning(f"Path is not a file or directory, skipping: {path}")
+                    current_function_logger.warning(f"Path is not a file or directory, skipping: {path}")
             except OSError as e:
-                logger.error(f"Error deleting {path}: {e}")
+                current_function_logger.error(f"Error deleting {path}: {e}")
                 if not ignore_errors:
                     success = False
                     raise # Re-raise if not ignoring errors
             except Exception as e:
-                logger.error(f"An unexpected error occurred while deleting {path}: {e}", exc_info=True)
+                current_function_logger.error(f"An unexpected error occurred while deleting {path}: {e}", exc_info=True)
                 if not ignore_errors:
                     success = False
                     raise
         else:
-            logger.debug(f"File not found, skipping deletion: {path}")
+            current_function_logger.debug(f"File not found, skipping deletion: {path}")
     return success
 
 def build_time_series_filepath(
@@ -404,50 +401,3 @@ def ensure_parent_directory_exists(file_path: Union[str, Path], logger_instance:
             raise
     else:
         current_logger.debug(f"Parent directory already exists: {parent_dir}")
-
-def delete_files(file_paths, ignore_errors=False, logger_instance=None):
-    """
-    Deletes a list of specified files.
-
-    Args:
-        file_paths (list): A list of file paths (str or Path objects) to delete.
-        ignore_errors (bool): If True, continue deleting other files even if one fails.
-                              If False, stop and raise an exception on the first failure.
-        logger_instance (logging.Logger, optional): An optional logger instance to use for logging.
-                                                     If None, a default internal logger is used.
-
-    Returns:
-        bool: True if all files were successfully deleted (or ignored if ignore_errors is True), False otherwise.
-    """
-    current_function_logger = logger_instance if logger_instance is not None else logger # Use the module's 'logger'
-    
-    success = True
-    for file_path in file_paths:
-        path = Path(file_path)
-        if path.exists():
-            try:
-                if path.is_file():
-                    os.remove(path)
-                    current_function_logger.info(f"Successfully deleted file: {path}") # Corrected logger usage
-                elif path.is_dir():
-                    # If it's a directory, use rmtree to delete it and its contents
-                    # This might not be intended for `delete_files` which implies files.
-                    # Consider having a separate `delete_directories` or `clean_directory` for this.
-                    # For now, if it's explicitly passed, we'll try to remove it.
-                    shutil.rmtree(path)
-                    current_function_logger.info(f"Successfully deleted directory and its contents: {path}") # Corrected logger usage
-                else:
-                    current_function_logger.warning(f"Path is not a file or directory, skipping: {path}") # Corrected logger usage
-            except OSError as e:
-                current_function_logger.error(f"Error deleting {path}: {e}") # Corrected logger usage
-                if not ignore_errors:
-                    success = False
-                    raise # Re-raise if not ignoring errors
-            except Exception as e:
-                current_function_logger.error(f"An unexpected error occurred while deleting {path}: {e}", exc_info=True) # Corrected logger usage
-                if not ignore_errors:
-                    success = False
-                    raise
-        else:
-            current_function_logger.debug(f"File not found, skipping deletion: {path}") # Corrected logger usage
-    return success
