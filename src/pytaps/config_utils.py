@@ -8,7 +8,7 @@ from typing import Dict, Any, Optional
 # A basic logger for this utility, to report errors before the main application logger is set up.
 # This ensures that configuration loading errors are always visible.
 _logger = logging.getLogger(__name__)
-_logger.setLevel(logging.INFO)
+_logger.setLevel(logging.INFO) # Initial level for config loading (e.g., to log 'Configuration loaded successfully')
 if not _logger.handlers:
     handler = logging.StreamHandler(sys.stderr)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -41,7 +41,7 @@ def load_configuration(config_file_path: str) -> Dict[str, Any]:
     try:
         with open(config_file_path, 'r') as f:
             config = json.load(f)
-        _logger.info(f"Configuration loaded successfully from: {config_file_path}")
+        ##_logger.info(f"Configuration loaded successfully from: {config_file_path}")
         return config
     except json.JSONDecodeError as e:
         _logger.error(f"Error decoding JSON from {config_file_path}: {e}")
@@ -143,6 +143,7 @@ def get_logging_settings(config: Dict[str, Any]) -> Dict[str, Any]:
     """
     Extracts and validates logging settings from the loaded configuration.
     This function specifically validates the structure required by pytaps's logging_utils.
+    Additionally, it updates the internal _logger's level to match the configuration.
 
     Args:
         config (Dict[str, Any]): The full configuration dictionary loaded from JSON.
@@ -175,6 +176,11 @@ def get_logging_settings(config: Dict[str, Any]) -> Dict[str, Any]:
         raise ValueError(f"Invalid log level specified: '{extracted_settings['log_level']}'. "
                          f"Must be one of: DEBUG, INFO, WARNING, ERROR, CRITICAL.")
     extracted_settings['log_level'] = log_level
+
+    # --- NEW: Update the internal _logger's level based on the loaded config ---
+    # This ensures config_utils's own logger respects the application's configured level
+    _logger.setLevel(log_level)
+    _logger.debug(f"Internal config_utils logger level updated to: {log_level_str}")
 
     return extracted_settings
 
@@ -236,4 +242,3 @@ def get_app_settings(config: Dict[str, Any], section_name: str) -> Dict[str, Any
     if section_name not in config:
         raise ValueError(f"Missing required '{section_name}' section in configuration.")
     return config[section_name]
-

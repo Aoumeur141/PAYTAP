@@ -5,7 +5,7 @@ import os # Added for os.path.exists
 
 setup(
     name='pytap',
-    version='1.0.0', 
+    version='0.2.0', 
     author_email='your.email@example.com',
     description='Python Toolkit for Automated Processes (PyTAP)',
     long_description=open('README.md').read() if os.path.exists('README.md') else '',
